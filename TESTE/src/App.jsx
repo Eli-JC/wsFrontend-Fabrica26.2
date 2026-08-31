@@ -75,23 +75,21 @@ return (
         ))}
       </section>
       <div class="max-w-7xl mx-auto mt-8 flex justify-center gap-4">
-        {/* Botão MOSTRAR MENOS: Só aparece quando houver mais de 8 heróis visíveis */}
         {arrPostFiltrado > 8 && (
           <button
             type="button"
             onClick={mostrarMenos}
-            className="border-2 border-zinc-900 bg-white text-zinc-900 font-mono text-sm font-bold uppercase px-6 py-3 hover:bg-zinc-900 hover:text-white transition-colors"
+            className="border-2 bg-white font-mono text-sm font-bold uppercase px-6 py-3 hover:bg-orange-500 hover:text-black transition-colors"
           >
             -
           </button>
         )}
 
-        {/* Botão MOSTRAR MAIS: Só aparece se ainda houver heróis na API para carregar */}
         {arrPostFiltrado < arrPosts.length && (
           <button
             type="button"
             onClick={mostrarMais}
-            className="border-2 border-zinc-900 bg-zinc-900 text-white font-mono text-sm font-bold uppercase px-6 py-3 hover:bg-white hover:text-zinc-900 transition-colors"
+            className="border-2 bg-zinc-900 text-white font-mono text-sm font-bold uppercase px-6 py-3 hover:bg-orange-500 hover:text-black transition-colors"
           >
             +
           </button>
