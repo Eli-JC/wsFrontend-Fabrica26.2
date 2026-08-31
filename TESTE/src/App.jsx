@@ -3,40 +3,44 @@ import axios from "axios";
 
 function App() {
 
-  const [arrPosts, setArrPosts] = useState([]);
-  const [arrPostFiltrado, setArrPostFiltrado] = useState(8)
+  const [arrPost, setarrPost] = useState([]);
+  const [arrPostsAparentes, setarrPostsAparentes] = useState(8);
+  const [busca, setBusca] = useState("");
 
   useEffect (() => {
     const requisiçãoAPI = async () => {
-      const respostaAPI = await axios.get('https://overfast-api.tekrop.fr/heroes?locale=pt-br');
+      const resarrPostaAPI = await axios.get('https://overfast-api.tekrop.fr/heroes?locale=pt-br');
 
-      setArrPosts(respostaAPI.data);
-
+      setarrPost(resarrPostaAPI.data);
     };
 
     requisiçãoAPI();
   }, []);
 
   const mostrarMais = () => {
-    setArrPostFiltrado((prev) => prev +8);
+    setarrPostsAparentes((prev) => prev +8);
   };
 
   const mostrarMenos = () => {
-    setArrPostFiltrado((prev) => Math.max (prev -8,8));
+    setarrPostsAparentes((prev) => Math.max (prev -8,8));
   };
 
-  const mostrarSubRole = (role) => {
-    const subRole = arrPosts.filter((post) => post.role === role);
-    setArrPosts(subRole);
-  }
+  const filtroHeroi = arrPost.filter((post) =>
+     post.name.toLowerCase().includes(busca.toLowerCase())
+  ); 
 
 return (
     <main class="min-h-screen bg-zinc-100 text-zinc-900 font-sans p-6 md:p-12">
       <section class="mb-8 max-w-7xl mx-auto">
         <h1 class="text-xl font-black font-mono tracking-wider text-center p-4">HEROS OVERWATCH</h1>
-        <form class="flex flex-col md:flex-row gap-3">
+        <form class="flex flex-col md:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
           <input type="text"
-            placeholder="BUSCAR HERÓI PELO NOME..."
+            placeholder="BUSCAR HERÓI POR NOME..."
+            value={busca}
+            onChange={(e) => {
+              setBusca(e.target.value);
+              setarrPostsAparentes(8); 
+            }}
             class="w-full border-2 bg-white p-3 font-mono text-sm font-bold"/>
           <button
             type="button"
@@ -47,7 +51,7 @@ return (
       </section>
 
       <section class="max-w-7xl mx-auto grid sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-8">
-        {arrPosts.slice(0,arrPostFiltrado).map((post) => (
+        {filtroHeroi.slice(0,arrPostsAparentes).map((post) => (
           <article key={post.key} class="border-3 bg-white flex flex-col justify-between shadow-lg overflow-hidden">
             <div>
               <div class="border-b-2 h-flex w-flex">
@@ -75,7 +79,7 @@ return (
         ))}
       </section>
       <div class="max-w-7xl mx-auto mt-8 flex justify-center gap-4">
-        {arrPostFiltrado > 8 && (
+        {arrPostsAparentes > 8 && (
           <button
             type="button"
             onClick={mostrarMenos}
@@ -85,7 +89,7 @@ return (
           </button>
         )}
 
-        {arrPostFiltrado < arrPosts.length && (
+        {arrPostsAparentes < filtroHeroi.length && (
           <button
             type="button"
             onClick={mostrarMais}
